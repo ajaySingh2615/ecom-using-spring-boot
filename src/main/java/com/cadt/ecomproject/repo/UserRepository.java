@@ -1,0 +1,7 @@
+package com.cadt.ecomproject.repo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.cadt.ecomproject.model.User;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+}
