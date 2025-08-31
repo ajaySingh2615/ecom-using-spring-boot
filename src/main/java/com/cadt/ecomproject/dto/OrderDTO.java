@@ -19,8 +19,6 @@ public class OrderDTO {
     private double totalAmount;
     private String status;
     private Date orderDate;
-    private String userName;
-    private String email;
 
     private List<OrderItemDTO> orderItems;  
 }
