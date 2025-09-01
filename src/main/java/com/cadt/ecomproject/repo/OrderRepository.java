@@ -10,7 +10,7 @@ import com.cadt.ecomproject.model.Orders;
 
 public interface OrderRepository extends JpaRepository<Orders, Long> {
 
-    @Query("Select * from Orders o Join fetch o.user")
+    @Query("Select o from Orders o Join fetch o.user")
     List<Orders> findAllOrdersWithUsers();
 
     List<Orders> findByUser(User user);
