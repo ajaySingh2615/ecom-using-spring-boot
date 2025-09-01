@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -59,5 +60,28 @@ public class OrderService {
         Orders savedOrder = orderRepository.save(orders);
 
         return new OrderDTO(savedOrder.getId(), savedOrder.getTotalAmount(), savedOrder.getStatus(), savedOrder.getOrderDate(), orderItemDTOs);
+    }
+
+    public List<OrderDTO> getAllOrders() {
+        List<Orders> orders = orderRepository.findAllOrdersWithUsers();
+        return orders.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    private OrderDTO convertToDTO(Orders orders) {
+        List<OrderItemDTO> orderItems = orders.getOrderItems().stream().map(item -> new OrderItemDTO(
+                item.getProduct().getName(),
+                item.getProduct().getPrice(),
+                item.getQuantity()
+        )).toList();
+
+        return new OrderDTO(
+                orders.getId(),
+                orders.getTotalAmount(),
+                orders.getStatus(),
+                orders.getOrderDate(),
+                orders.getUser() != null ? orders.getUser().getName() : "unknown",
+                orders.getUser() != null ? orders.getUser().getEmail() : "unknown",
+                orderItems
+        );
     }
 }
